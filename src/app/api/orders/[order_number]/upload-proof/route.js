@@ -24,26 +24,15 @@ export async function POST(request, { params }) {
     }
 
     const buffer = Buffer.from(await file.arrayBuffer());
-    const filename = `${Date.now()}_${file.name.replace(/\s+/g, '_')}`;
     
-    // Define the path
-    const uploadDir = path.join(process.cwd(), 'public', 'assets', 'bukti_pembayaran');
-    
-    // Ensure dir exists
-    try {
-      await fs.access(uploadDir);
-    } catch {
-      await fs.mkdir(uploadDir, { recursive: true });
-    }
-
-    // Write file
-    await fs.writeFile(path.join(uploadDir, filename), buffer);
+    // Convert to base64
+    const base64Image = `data:${file.type};base64,${buffer.toString('base64')}`;
 
     // Update database
     await prisma.tb_pesanan.update({
       where: { id_pesanan: order_number },
       data: {
-        bukti_pembayaran: filename,
+        bukti_pembayaran: base64Image,
         status_pesanan: 'Menunggu Pembayaran'
       }
     });
