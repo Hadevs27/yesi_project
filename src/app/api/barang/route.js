@@ -9,7 +9,7 @@ export async function GET() {
       ...b,
       foto_url: b.foto_barang && b.foto_barang.startsWith('http') 
         ? b.foto_barang 
-        : `http://localhost:8000/assets/foto_produk/${b.foto_barang}` // Placeholder lokal (nanti bisa diganti url s3/storage jika ada)
+        : `https://yesi-project-3ppo.vercel.app/assets/produk/${b.foto_barang}`
     }));
 
     return NextResponse.json({

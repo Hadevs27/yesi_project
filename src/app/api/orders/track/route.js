@@ -42,7 +42,7 @@ export async function POST(request) {
       if (b) {
         b.foto_url = b.foto_barang && b.foto_barang.startsWith('http') 
           ? b.foto_barang 
-          : `http://localhost:8000/assets/produk/${b.foto_barang}`;
+          : `https://yesi-project-3ppo.vercel.app/assets/produk/${b.foto_barang}`;
       }
       return {
         ...d,
