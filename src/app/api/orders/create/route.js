@@ -51,6 +51,8 @@ export async function POST(request) {
       const total_pembayaran = total_harga + ongkir;
 
       // Insert order
+      const db_jenis_pembayaran = jenis_pembayaran === 'Tunai / Kasir' ? 'COD' : jenis_pembayaran;
+
       await tx.tb_pesanan.create({
         data: {
           id_pesanan: order_id,
@@ -61,7 +63,7 @@ export async function POST(request) {
           total_harga_pesanan: total_pembayaran.toString(),
           status_pesanan: 'Menunggu Pembayaran',
           tanggal_pesanan: new Date(),
-          jenis_pembayaran,
+          jenis_pembayaran: db_jenis_pembayaran,
           id_meja: id_meja ? parseInt(id_meja) : null
         }
       });
