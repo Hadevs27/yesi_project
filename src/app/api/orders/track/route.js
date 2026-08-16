@@ -37,10 +37,18 @@ export async function POST(request) {
       where: { id_barang: { in: barangIds } }
     });
 
-    const detail_pesanan = details.map(d => ({
-      ...d,
-      barang: barangs.find(b => b.id_barang === d.id_barang)
-    }));
+    const detail_pesanan = details.map(d => {
+      const b = barangs.find(b => b.id_barang === d.id_barang);
+      if (b) {
+        b.foto_url = b.foto_barang && b.foto_barang.startsWith('http') 
+          ? b.foto_barang 
+          : `http://localhost:8000/assets/produk/${b.foto_barang}`;
+      }
+      return {
+        ...d,
+        barang: b
+      };
+    });
 
     return NextResponse.json({
       success: true,
